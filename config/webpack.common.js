@@ -4,10 +4,11 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const DotenvWebpack = require('dotenv-webpack')
 
+/*
 const extractSass = new ExtractTextPlugin({
     filename: 'css/[name].[contenthash].css',
     disable: process.env.NODE_ENV === 'development'
-})
+})*/
 
 module.exports = {
     entry: './src/index.js',
@@ -26,7 +27,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'src/index.html'
 		}),
-        extractSass,
+       // extractSass,
         new CopyWebpackPlugin([{ from: path.resolve(__dirname, '../static'), to: 'static' }]),
         new DotenvWebpack({
             path: path.resolve(__dirname, '../.env')
@@ -54,29 +55,8 @@ module.exports = {
                 }
             },
             {
-                test: /\.sass$/,
-                use: extractSass.extract({
-                    use: [
-                        {
-                            loader: 'css-loader'
-                        },
-                        {
-                            loader: 'sass-loader'
-                        }
-                    ],
-                    fallback: 'style-loader'
-                })
-            },
-            {
-                test: /\.css$/,
-                use: extractSass.extract({
-                    use: [
-                        {
-                            loader: 'css-loader'
-                        }
-                    ],
-                    fallback: 'style-loader'
-                })
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
